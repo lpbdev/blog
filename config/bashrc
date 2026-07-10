@@ -164,9 +164,9 @@ function git_branch {
 
     # 检查是否有修改
     if git diff --quiet 2>/dev/null && git diff --cached --quiet 2>/dev/null && [ -z "$(git ls-files --others --exclude-standard)" ]; then
-        echo "(${branch}_)"
+        echo "[${branch}]"
     else
-        echo "(${branch}*)"
+        echo "(${branch})"
     fi
 }
 
