@@ -1,22 +1,16 @@
 source $VIMRUNTIME/defaults.vim
-set bg=dark
-
 let mapleader=" "
+set bg=dark
 
 set path+=**
 
 set lazyredraw          " 延迟重绘（提升性能）
 set ttyfast             " 快速终端连接
-set magic               " 使用正则魔法模式 搜索优化
-set nolinebreak
 set showbreak=
-set shortmess+=a
 set backspace=indent,eol,start  " 更好的退格键行为
 set whichwrap+=<,>,h,l  " 光标行首行尾时自动换行
 set list
 set listchars=tab:▸\ ,trail:␣,extends:>,precedes:<,nbsp:+
-set cinoptions={s " 大括号单独一行 (Allman 风格)
-set cinoptions+=:0
 
 set shiftwidth=4        " 设置制表符宽度"
 set expandtab           " 用空格代替制表符
@@ -31,16 +25,12 @@ set encoding=utf-8 " 设置 Vim 内部的编码
 set fileencodings=utf-8,gbk,gb2312,gb18030,cp936,ucs-bom,big5,latin1 " 设置读取文件时尝试的编码顺序
 
 set completeopt+=popup
-
 set autoindent          " 继承前一行的缩进方式，特别适用于多行注释
-set clipboard=unnamed   " 共享剪贴板
-
 set number              " 设置行号
 set hlsearch
 set incsearch           " 在搜索时，输入的词句的逐字符高亮（类似firefox的搜索）
 
-"set tw=81 
-set cc=81
+set cc=100
 
 set ignorecase smartcase
 set showmatch           " 显示匹配的括号
@@ -49,10 +39,10 @@ set autowrite
 set nowrap
 set cursorline
 
-if !isdirectory(expand("~/.vimcache/"))
-    call mkdir($HOME . "/.vimcache", "p")
-endif
-
+"if !isdirectory(expand("~/.vimcache/"))
+"    call mkdir($HOME . "/.vimcache", "p")
+"endif
+"
 let g:netrw_liststyle = 3
 let g:netrw_home =$HOME.'/.vimcache/'
 
@@ -87,4 +77,4 @@ nnoremap <F6> :cnext<CR>
 nnoremap <F7> :cprevious<CR>
 nnoremap <F8> :cclose<CR>
 
-colorscheme gruvbox
+colorscheme desert
