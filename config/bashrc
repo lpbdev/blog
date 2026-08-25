@@ -178,3 +178,4 @@ PS1+="\[\033[1;32m\]$: \[\e[0m\]"
 
 export PATH="$HOME/.local/bin/:$PATH"
 
+. "$HOME/.cargo/env"
