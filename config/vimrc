@@ -2,8 +2,10 @@ source $VIMRUNTIME/defaults.vim
 let mapleader=" "
 set bg=dark
 
-set path+=**
+set path=.,,,**   " 从当前目录向上 2 级（到 ~/project/）再向下递归
+set wildmenu 
 
+set mouse=
 set lazyredraw          " 延迟重绘（提升性能）
 set ttyfast             " 快速终端连接
 set showbreak=
@@ -31,7 +33,6 @@ set hlsearch
 set incsearch           " 在搜索时，输入的词句的逐字符高亮（类似firefox的搜索）
 
 set cc=100
-
 set ignorecase smartcase
 set showmatch           " 显示匹配的括号
 set autoread
@@ -39,17 +40,16 @@ set autowrite
 set nowrap
 set cursorline
 
-"if !isdirectory(expand("~/.vimcache/"))
-"    call mkdir($HOME . "/.vimcache", "p")
-"endif
-"
+if !isdirectory(expand("~/.vimcache/"))
+    call mkdir($HOME . "/.vimcache", "p")
+endif
+
 let g:netrw_liststyle = 3
 let g:netrw_home =$HOME.'/.vimcache/'
 
-set backup            "允许生成备份文件"
-set backupdir=~/.vimcache
-set swapfile          "允许生成swap文件"
-set directory=~/.vimcache
+set nobackup            "允许生成备份文件"
+set nowritebackup
+set noswapfile          "允许生成swap文件"
 set undofile          "使得即使在文件关闭后也可以维护撤消历史记录
 set undodir=~/.vimcache
 
