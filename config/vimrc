@@ -1,7 +1,6 @@
 source $VIMRUNTIME/defaults.vim
 let mapleader=" "
 set bg=dark
-
 set path=.,,,**   " 从当前目录向上 2 级（到 ~/project/）再向下递归
 set wildmenu 
 
@@ -19,7 +18,6 @@ set expandtab           " 用空格代替制表符
 set tabstop=4           " 设置制表符宽度"
 set softtabstop=4
 set virtualedit=block
-set termguicolors
 
 set nobomb
 set fileencoding=utf-8 " 设置新文件的默认编码为 UTF-8
