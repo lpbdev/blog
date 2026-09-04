@@ -415,3 +415,5 @@ doxy/*
 plugged/
 extensions/
 memos.json
+.lastsession.vim
+./config/vim/autoload/plug.vim
