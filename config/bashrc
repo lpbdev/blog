@@ -135,6 +135,9 @@ alias unix2dosall="find . -type f -exec unix2dos {} \;"
 
 #cd() { builtin cd "$@" && ls -ltrha; }
 alias du='du --max-depth=1'
+alias topsize='find . -type f -exec du -h {} + | sort -rh | head -10'
+alias topcpus='ps aux --sort=-%cpu | head -11'
+alias topmems='ps aux --sort=-%mem | head -11'
 
 # Install Ruby Gems to ~/gems' >> ~/.bashrc
 export GEM_HOME="$HOME/.gems"
