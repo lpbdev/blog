@@ -132,6 +132,7 @@ alias md2a5report=" pandoc -s --pdf-engine=xelatex --highlight-style=tango -F pa
 alias pip3up="pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip3 install -U"
 alias dos2unixall="find . -type f -exec dos2unix {} \;"
 alias unix2dosall="find . -type f -exec unix2dos {} \;"
+alias unzipall="parallel unzip ::: *.zip"
 
 #cd() { builtin cd "$@" && ls -ltrha; }
 alias du='du --max-depth=1'
