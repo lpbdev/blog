@@ -11,7 +11,7 @@
     "clangd.inlayHints.sep": "⇝",
     "clangd.semanticHighlighting": true,
 
-    "coc.preferences.formatOnSave": true,
+    "coc.preferences.formatOnSave": false,
     "coc.preferences.formatOnType": false,
 
     "diagnostic.virtualText": true,
@@ -27,5 +27,8 @@
 
     "git.enableGutters": true,         
     "git.addGBlameToVirtualText": true,
-    "git.blame.highlight": "Comment"   
+    "git.blame.highlight": "Comment" ,  
+    
+	"prettier.tabWidth": 4,
+  	"prettier.useTabs": false
 }
