@@ -194,7 +194,7 @@ vmap <unique> <leader>fra <Plug>LeaderfRgVisualLiteralNoBoundary
 vmap <unique> <leader>frb <Plug>LeaderfRgVisualLiteralBoundary
 vmap <unique> <leader>frc <Plug>LeaderfRgVisualRegexNoBoundary
 vmap <unique> <leader>frd <Plug>LeaderfRgVisualRegexBoundary
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'itchyny/lightline.vim'
 
 let g:lightline = {
