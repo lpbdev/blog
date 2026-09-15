@@ -1,13 +1,10 @@
 source $VIMRUNTIME/defaults.vim
 let mapleader=" "
 set bg=dark
-set path=.,,,**   " 从当前目录向上 2 级（到 ~/project/）再向下递归
 set wildmenu 
 
 set mouse=
 set lazyredraw          " 延迟重绘（提升性能）
-set ttyfast             " 快速终端连接
-set showbreak=
 set backspace=indent,eol,start  " 更好的退格键行为
 set whichwrap+=<,>,h,l  " 光标行首行尾时自动换行
 set list
@@ -19,12 +16,11 @@ set tabstop=4           " 设置制表符宽度"
 set softtabstop=4
 set virtualedit=block
 
-set nobomb
-set fileencoding=utf-8 " 设置新文件的默认编码为 UTF-8
 set encoding=utf-8 " 设置 Vim 内部的编码
+set fileencoding=utf-8 " 设置新文件的默认编码为 UTF-8
 set fileencodings=utf-8,gbk,gb2312,gb18030,cp936,ucs-bom,big5,latin1 " 设置读取文件时尝试的编码顺序
 
-set completeopt+=popup
+set completeopt=menu,menuone,noselect,noinsert
 set autoindent          " 继承前一行的缩进方式，特别适用于多行注释
 set number              " 设置行号
 set nrformats=
@@ -40,27 +36,23 @@ set nowrap
 set cursorline
 
 set foldenable " 1. 启用折叠功能
-set foldmethod=syntax   " 或者 indent / marker / expr
+set foldmethod=syntax
 set foldlevelstart=99 " 3. 关键：文件打开时，所有折叠都展开
 set foldnestmax=5 " 4. 限制最大嵌套层数，防止性能问题
 set foldcolumn=2 " 5. （可选）在左侧显示折叠标识列
 
-if !isdirectory(expand("~/.vimcache/"))
-    call mkdir($HOME . "/.vimcache", "p")
-endif
-
-let g:netrw_liststyle = 3
-let g:netrw_home =$HOME.'/.vimcache/'
+set undofile
+let s:cache = expand('~/.vimcache')
+if !isdirectory(s:cache) | call mkdir(s:cache, 'p') | endif
+let &undodir = s:cache
+let g:netrw_home = s:cache
 
 set nobackup            "允许生成备份文件"
 set nowritebackup
 set noswapfile          "允许生成swap文件"
-set undofile          "使得即使在文件关闭后也可以维护撤消历史记录
-set undodir=~/.vimcache
 
 set laststatus=2        " 显示状态栏
-set statusline=
-set statusline+=%#ErrorMsg#\ [%{toupper(mode())}]\
+set statusline=set statusline+=%#ErrorMsg#\ [%{toupper(mode())}]\
 set statusline+=%#DiffAdd#\ %F
 set statusline+=\ %#MoreMsg#\%m%r%w
 set statusline+=%#StatuslineNC#
@@ -77,7 +69,6 @@ if executable('rg')
   set grepformat=%f:%l:%c:%m
 endif
 
-nnoremap <F5> :silent make\|redraw!\|cc<CR>
 nnoremap <F6> :cnext<CR>
 nnoremap <F7> :cprevious<CR>
 nnoremap <F8> :cclose<CR>
@@ -94,10 +85,7 @@ endif
 
 call plug#begin()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Plug 'dstein64/vim-startuptime'
-"Plug 'mhinz/vim-startify'
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'neoclide/coc.nvim', {'branch': 'release','for':['cpp', 'c','python']}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
             \ 'coc-clangd',  'coc-pyright',
             \ 'coc-snippets','coc-highlight', 'coc-git',
@@ -110,11 +98,17 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " 用 <space>e 开关文件树
-nmap <space>e :CocCommand explorer<CR>
+nmap <leader>e :CocCommand explorer<CR>
 " 代码编辑
-"nmap <leader>f <Plug>(coc-format)
-"nmap <leader>ff <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format)
+nmap <leader>ff <Plug>(coc-format-selected)
 nmap <leader>rn <Plug>(coc-rename)    " 重命名符号
+
+" Tab 在补全菜单/ snippet 占位符间跳转
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ "\<Tab>"
 
 " 诊断和错误处理
 nmap <silent> [g <Plug>(coc-diagnostic-prev) " 上一个错误
@@ -125,9 +119,6 @@ if $MSYSTEM != ''
     let g:coc_config_home = $COC_CONFIG_HOME
     let g:coc_data_home = $COC_CONFIG_HOME
 endif
-
-let g:coc_diagnostic_virtual_text = 1
-let g:coc_enable_virtual_text = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'godlygeek/tabular'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
