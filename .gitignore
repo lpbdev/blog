@@ -417,3 +417,7 @@ extensions/
 memos.json
 .lastsession.vim
 ./config/vim/autoload/plug.vim
+config/vim/commands
+config/vim/mru
+config/vim/sessions/default.vim
+

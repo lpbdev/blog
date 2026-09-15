@@ -86,10 +86,12 @@ endif
 call plug#begin()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_config_home = s:cache
+let g:coc_data_home   = s:cache
 let g:coc_global_extensions = [
             \ 'coc-clangd',  'coc-pyright',
             \ 'coc-snippets','coc-highlight', 'coc-git',
-            \ 'coc-explorer', 'coc-pairs','coc-lists'
+            \ 'coc-pairs','coc-lists'
             \ ]
 
 nmap <silent> gd <Plug>(coc-definition)
@@ -114,11 +116,6 @@ inoremap <silent><expr> <TAB>
 nmap <silent> [g <Plug>(coc-diagnostic-prev) " 上一个错误
 nmap <silent> ]g <Plug>(coc-diagnostic-next) " 下一个错误
 
-if $MSYSTEM != ''
-    let $COC_CONFIG_HOME = expand('/c/msys64//home/'.$USERNAME.'/.vim')
-    let g:coc_config_home = $COC_CONFIG_HOME
-    let g:coc_data_home = $COC_CONFIG_HOME
-endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'godlygeek/tabular'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
