@@ -83,6 +83,9 @@ nnoremap <F7> :cprevious<CR>
 nnoremap <F8> :cclose<CR>
 
 colorscheme desert
+if v:version < 900
+    finish
+endif
 
 if empty(glob($HOME."/.vim/autoload/plug.vim"))
     command! InsPlug :! curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -91,60 +94,42 @@ endif
 
 call plug#begin()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'dstein64/vim-startuptime'
-Plug 'mhinz/vim-startify'
+"Plug 'dstein64/vim-startuptime'
+"Plug 'mhinz/vim-startify'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 只在 Vim >= 9.0 时加载 coc.nvim
-if v:version >= 900
-    Plug 'neoclide/coc.nvim', {'branch': 'release','for':['cpp', 'c','python']}
-    let g:coc_global_extensions = [
-                \ 'coc-clangd',  'coc-pyright',
-                \ 'coc-snippets','coc-highlight', 'coc-git',
-                \ ]
+Plug 'neoclide/coc.nvim', {'branch': 'release','for':['cpp', 'c','python']}
+let g:coc_global_extensions = [
+            \ 'coc-clangd',  'coc-pyright',
+            \ 'coc-snippets','coc-highlight', 'coc-git',
+            \ 'coc-explorer', 'coc-pairs','coc-lists'
+            \ ]
 
-    nmap <silent> gd <Plug>(coc-definition)
-    nmap <silent> gy <Plug>(coc-type-definition)
-    nmap <silent> gi <Plug>(coc-implementation)
-    nmap <silent> gr <Plug>(coc-references)
-    " 代码编辑
-    "nmap <leader>f <Plug>(coc-format)
-    "nmap <leader>ff <Plug>(coc-format-selected)
-    nmap <leader>rn <Plug>(coc-rename)    " 重命名符号
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-    " 诊断和错误处理
-    nmap <silent> [g <Plug>(coc-diagnostic-prev) " 上一个错误
-    nmap <silent> ]g <Plug>(coc-diagnostic-next) " 下一个错误
+" 用 <space>e 开关文件树
+nmap <space>e :CocCommand explorer<CR>
+" 代码编辑
+"nmap <leader>f <Plug>(coc-format)
+"nmap <leader>ff <Plug>(coc-format-selected)
+nmap <leader>rn <Plug>(coc-rename)    " 重命名符号
 
-    if $MSYSTEM != ''
-        let $COC_CONFIG_HOME = expand('/c/msys64//home/'.$USERNAME.'/.vim')
-        let g:coc_config_home = $COC_CONFIG_HOME
-        let g:coc_data_home = $COC_CONFIG_HOME
-    endif
+" 诊断和错误处理
+nmap <silent> [g <Plug>(coc-diagnostic-prev) " 上一个错误
+nmap <silent> ]g <Plug>(coc-diagnostic-next) " 下一个错误
 
-    let g:coc_diagnostic_virtual_text = 1
-    let g:coc_enable_virtual_text = 1
+if $MSYSTEM != ''
+    let $COC_CONFIG_HOME = expand('/c/msys64//home/'.$USERNAME.'/.vim')
+    let g:coc_config_home = $COC_CONFIG_HOME
+    let g:coc_data_home = $COC_CONFIG_HOME
 endif
+
+let g:coc_diagnostic_virtual_text = 1
+let g:coc_enable_virtual_text = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'godlygeek/tabular'
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-"Plug 'junegunn/fzf.vim'
-"
-"" 设置触发快捷键
-"nmap <Leader>f :Files<CR>
-"nmap <Leader>b :Buffers<CR>
-"nmap <Leader>h :History<CR>
-"nmap <Leader>l :Lines<CR>
-"
-"" 设置 fzf 使用 ripgrep 进行内容搜索
-"if executable('rg')
-"    set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-"    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-"endif
-"
-"" 界面设置：使用弹出窗口（需要较新版本的 Vim 或 Neovim）
-"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'preservim/vim-markdown',{'for':['markdown']}
 let g:vim_markdown_math = 1
@@ -152,10 +137,5 @@ let g:vim_markdown_folding_level = 6
 let g:vim_markdown_frontmatter = 1
 let g:tex_conceal = ""
 let g:vim_markdown_conceal = 0
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-surround'
-"Plug 'sheerun/vim-polyglot'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#end()            " required
