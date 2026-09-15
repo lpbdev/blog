@@ -27,6 +27,7 @@ set fileencodings=utf-8,gbk,gb2312,gb18030,cp936,ucs-bom,big5,latin1 " 设置读
 set completeopt+=popup
 set autoindent          " 继承前一行的缩进方式，特别适用于多行注释
 set number              " 设置行号
+set nrformats=
 set hlsearch
 set incsearch           " 在搜索时，输入的词句的逐字符高亮（类似firefox的搜索）
 
