@@ -52,7 +52,7 @@ set nowritebackup
 set noswapfile          "允许生成swap文件"
 
 set laststatus=2        " 显示状态栏
-set statusline=set statusline+=%#ErrorMsg#\ [%{toupper(mode())}]\
+set statusline+=%#ErrorMsg#\ [%{toupper(mode())}]\
 set statusline+=%#DiffAdd#\ %F
 set statusline+=\ %#MoreMsg#\%m%r%w
 set statusline+=%#StatuslineNC#
