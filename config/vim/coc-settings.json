@@ -25,6 +25,8 @@
     "suggest.snippetSupport": false,
     "suggest.enablePreview": false,
 
+    "snippets.triggerCharacters": "",
+
     "git.enableGutters": true,         
     "git.addGBlameToVirtualText": true,
     "git.blame.highlight": "Comment" ,  

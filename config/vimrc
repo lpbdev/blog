@@ -50,10 +50,11 @@ let g:netrw_home = s:cache
 set nobackup            "允许生成备份文件"
 set nowritebackup
 set noswapfile          "允许生成swap文件"
+set autochdir
 
 set laststatus=2        " 显示状态栏
-set statusline+=%#ErrorMsg#\ [%{toupper(mode())}]\
-set statusline+=%#DiffAdd#\ %F
+set statusline+=%#ErrorMsg#\ [%{toupper(mode())}]
+set statusline+=\ %#DiffAdd#\ %F
 set statusline+=\ %#MoreMsg#\%m%r%w
 set statusline+=%#StatuslineNC#
 set statusline+=%=
@@ -74,7 +75,7 @@ nnoremap <F7> :cprevious<CR>
 nnoremap <F8> :cclose<CR>
 
 colorscheme desert
-if v:version < 900
+if v:version <= 900
     finish
 endif
 
@@ -90,7 +91,7 @@ let g:coc_config_home = s:cache
 let g:coc_data_home   = s:cache
 let g:coc_global_extensions = [
             \ 'coc-clangd',  'coc-pyright',
-            \ 'coc-snippets','coc-highlight', 'coc-git',
+            \ 'coc-highlight', 'coc-git',
             \ 'coc-pairs','coc-lists'
             \ ]
 
