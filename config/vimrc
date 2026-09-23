@@ -75,6 +75,7 @@ nnoremap <F7> :cprevious<CR>
 nnoremap <F8> :cclose<CR>
 
 colorscheme desert
+
 if v:version <= 900
     finish
 endif
@@ -108,10 +109,10 @@ nmap <leader>ff <Plug>(coc-format-selected)
 nmap <leader>rn <Plug>(coc-rename)    " 重命名符号
 
 " Tab 在补全菜单/ snippet 占位符间跳转
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ "\<Tab>"
+"inoremap <silent><expr> <TAB>
+"      \ coc#pum#visible() ? coc#pum#next(1) :
+"      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"      \ "\<Tab>"
 
 " 诊断和错误处理
 nmap <silent> [g <Plug>(coc-diagnostic-prev) " 上一个错误
