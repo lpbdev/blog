@@ -39,7 +39,7 @@ set foldenable " 1. 启用折叠功能
 set foldmethod=syntax
 set foldlevelstart=99 " 3. 关键：文件打开时，所有折叠都展开
 set foldnestmax=5 " 4. 限制最大嵌套层数，防止性能问题
-set foldcolumn=2 " 5. （可选）在左侧显示折叠标识列
+"set foldcolumn=2 " 5. （可选）在左侧显示折叠标识列
 
 set undofile
 let s:cache = expand('~/.vimcache')
@@ -74,6 +74,10 @@ nnoremap <F6> :cnext<CR>
 nnoremap <F7> :cprevious<CR>
 nnoremap <F8> :cclose<CR>
 
+nnoremap <leader>po :ptag <C-R><C-W><CR>
+nnoremap <leader>pc :pclose<CR>
+set previewpopup=height:15,width:80,border:round,highlight:Pmenu
+
 colorscheme desert
 
 if v:version <= 900
@@ -87,58 +91,79 @@ endif
 
 call plug#begin()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 安装 vim-lsp 和 asyncomplete 插件
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'  " 可选，自动配置 LSP 服务器
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'ludovicchabant/vim-gutentags' "符号索引 
+Plug 'skywind3000/gutentags_plus'
 
-let g:asyncomplete_auto_popup = 1 
-let g:asyncomplete_auto_completeopt = 0
-
-let g:lsp_async_completion = 1           " [关键] 异步补全
-let g:asyncomplete_min_chars = 2         " 延迟触发，降低负载
-let g:lsp_completion_documentation_enabled = 0 " 如果需要文档就保持1，感觉慢可以设为0
-
-
-" 当补全菜单可见时：
-"   <Tab> 向下选择 (相当于 Ctrl-n)
-"   <S-Tab> 向上选择 (相当于 Ctrl-p)
-" 如果菜单不可见，则插入普通的 Tab 字符
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
-
-" 当补全菜单可见时：
-"   用 <Enter> 确认选中项，并关闭菜单 (asyncomplete#close_popup())
-"   而不是换行。如果菜单不可见，则正常换行。
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-
-let g:lsp_insert_text_enabled = 1
-let g:lsp_text_edit_enabled = 1
-
-" 基础 LSP 设置
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_diagnostics_float_cursor = 1
-let g:lsp_diagnostics_highlights_delay = 200
-let g:lsp_signs_enabled = 1
-let g:lsp_signs_error = {'text': '✗'}
-let g:lsp_signs_warning = {'text': '⚠'}
-let g:lsp_signs_hint = {'text': '?'}
-let g:lsp_signs_information = {'text': 'i'}
-
-" C++ 配置 (使用 clangd)
-if executable('clangd')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'clangd',
-        \ 'cmd': {server_info->['clangd']},
-        \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
-        \ })
+let $GTAGSLABEL = 'native-pygments' " 'native'
+let $GTAGSCONF = expand('~/.gtags.conf')
+"let g:gutentags_ctags_executable = expand('~/Projects/bins/bin/universal-ctags')
+let g:gutentags_define_advanced_commands = 1
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+au BufRead,BufEnter * let g:gutentags_ctags_tagfile = &filetype.'.tags'
+let g:gutentags_modules = []
+if executable('ctags')
+    let g:gutentags_modules += ['ctags']
+endif
+if executable('gtags-cscope') && executable('gtags')
+    let g:gutentags_modules += ['gtags_cscope']
 endif
 
-nmap <buffer> gi <plug>(lsp-call-hierarchy-incoming)
-nmap <buffer> go <plug>(lsp-call-hierarchy-outgoing)
+let g:gutentags_ctags_exclude=['*.trace']
+
+" 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let s:vim_tags = expand('~/.vimcache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+if !isdirectory(s:vim_tags)                   "检测~/.cache/tags 不存在就新建
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+
+let g:gutentags_ctags_extra_args  = ['--fields=+niazSl']
+
+if &filetype=='cpp'
+    let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+endif
+if &filetype=='c'
+    let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+endif
+
+if &filetype=='fortran'
+    let g:gutentags_ctags_extra_args += ['--fortran-kinds=+imv']
+endif
+
+" Get ctags version
+let g:ctags_version = system('ctags --version')[0:8]
+
+" 如果使用 universal ctags 需要增加下面一行
+if g:ctags_version == "Universal"
+    let g:gutentags_ctags_extra_args += ['--extras=+q', '--output-format=e-ctags']
+    if &filetype=='markdown'
+        let g:gutentags_ctags_extra_args += ['--markdown-kinds=+cs']
+    endif
+endif
+
+let g:gutentags_auto_add_gtags_cscope = 1 " 禁用 gutentags 自动加载 gtags 数据库的行为
+let g:gutentags_plus_switch = 1 "Change focus to quickfix window after search (optional).
+"Enable advanced commands: GutentagsToggleTrace, etc.
+let g:gutentags_define_advanced_commands = 1
+let g:gutentags_trace = 0 "调试程序
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Plug 'dense-analysis/ale'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_set_loclist = 1
+let g:ale_open_list = 0
+let g:ale_keep_list_window_open = 0
+let g:ale_lint_on_text_changed='always' "文件内容发生变化时不检查
+let g:ale_lint_on_enter = 1  "打开文件时不检查
+
+"使用clang对c和c++进行语法检查，对python使用pylint进行语法检查
+let g:ale_linters = {
+    \   'c++': ['clang','cppcheck','gcc'],
+    \   'c': ['clang','cppcheck','gcc'],
+    \   'python': ['pylint','flake8'],
+    \}
+        
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'godlygeek/tabular'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
