@@ -87,36 +87,57 @@ endif
 
 call plug#begin()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_config_home = $HOME."/.vim/"
-let g:coc_data_home   = s:cache
-let g:coc_global_extensions = [
-            \ 'coc-clangd',  'coc-pyright',
-            \ 'coc-highlight', 'coc-git',
-            \ 'coc-pairs','coc-lists'
-            \ ]
+" 安装 vim-lsp 和 asyncomplete 插件
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'  " 可选，自动配置 LSP 服务器
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+let g:asyncomplete_auto_popup = 1 
+let g:asyncomplete_auto_completeopt = 0
 
-" 用 <space>e 开关文件树
-nmap <leader>e :CocCommand explorer<CR>
-" 代码编辑
-nmap <leader>f <Plug>(coc-format)
-nmap <leader>ff <Plug>(coc-format-selected)
-nmap <leader>rn <Plug>(coc-rename)    " 重命名符号
+let g:lsp_async_completion = 1           " [关键] 异步补全
+let g:asyncomplete_min_chars = 2         " 延迟触发，降低负载
+let g:lsp_completion_documentation_enabled = 0 " 如果需要文档就保持1，感觉慢可以设为0
 
-" Tab 在补全菜单/ snippet 占位符间跳转
-"inoremap <silent><expr> <TAB>
-"      \ coc#pum#visible() ? coc#pum#next(1) :
-"      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-"      \ "\<Tab>"
 
-" 诊断和错误处理
-nmap <silent> [g <Plug>(coc-diagnostic-prev) " 上一个错误
-nmap <silent> ]g <Plug>(coc-diagnostic-next) " 下一个错误
+" 当补全菜单可见时：
+"   <Tab> 向下选择 (相当于 Ctrl-n)
+"   <S-Tab> 向上选择 (相当于 Ctrl-p)
+" 如果菜单不可见，则插入普通的 Tab 字符
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
+
+" 当补全菜单可见时：
+"   用 <Enter> 确认选中项，并关闭菜单 (asyncomplete#close_popup())
+"   而不是换行。如果菜单不可见，则正常换行。
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+
+let g:lsp_insert_text_enabled = 1
+let g:lsp_text_edit_enabled = 1
+
+" 基础 LSP 设置
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_diagnostics_highlights_delay = 200
+let g:lsp_signs_enabled = 1
+let g:lsp_signs_error = {'text': '✗'}
+let g:lsp_signs_warning = {'text': '⚠'}
+let g:lsp_signs_hint = {'text': '?'}
+let g:lsp_signs_information = {'text': 'i'}
+
+" C++ 配置 (使用 clangd)
+if executable('clangd')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clangd',
+        \ 'cmd': {server_info->['clangd']},
+        \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp'],
+        \ })
+endif
+
+nmap <buffer> gi <plug>(lsp-call-hierarchy-incoming)
+nmap <buffer> go <plug>(lsp-call-hierarchy-outgoing)
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'godlygeek/tabular'
