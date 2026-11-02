@@ -35,10 +35,10 @@ set autowrite
 set nowrap
 set cursorline
 
-set foldenable " 1. 启用折叠功能
-set foldmethod=syntax
-set foldlevelstart=99 " 3. 关键：文件打开时，所有折叠都展开
-set foldnestmax=5 " 4. 限制最大嵌套层数，防止性能问题
+set nofoldenable " 1. 启用折叠功能
+set foldmethod=manual
+"set foldlevelstart=99 " 3. 关键：文件打开时，所有折叠都展开
+"set foldnestmax=5 " 4. 限制最大嵌套层数，防止性能问题
 "set foldcolumn=2 " 5. （可选）在左侧显示折叠标识列
 
 set undofile
