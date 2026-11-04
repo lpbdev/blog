@@ -10,10 +10,11 @@ set whichwrap+=<,>,h,l  " 光标行首行尾时自动换行
 set list
 set listchars=tab:▸\ ,trail:␣,extends:>,precedes:<,nbsp:+
 
-set shiftwidth=4        " 设置制表符宽度"
-set expandtab           " 用空格代替制表符
-set tabstop=4           " 设置制表符宽度"
-set softtabstop=4
+set tabstop=4       " 一个制表符(Tab)在屏幕上显示的宽度为4个空格
+set softtabstop=4   " 在插入模式下按Tab键，光标移动的宽度为4个空格
+set shiftwidth=4    " 自动缩进(如使用>>或<<命令)时，每级缩进的宽度为4个空格
+set expandtab       " 核心选项：将输入的Tab键转换为空格
+
 set virtualedit=block
 
 set encoding=utf-8 " 设置 Vim 内部的编码
