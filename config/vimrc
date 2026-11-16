@@ -27,7 +27,6 @@ set number              " 设置行号
 set nrformats=
 set hlsearch
 set incsearch           " 在搜索时，输入的词句的逐字符高亮（类似firefox的搜索）
-
 set cc=100
 set ignorecase smartcase
 set showmatch           " 显示匹配的括号
@@ -70,6 +69,9 @@ if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
   set grepformat=%f:%l:%c:%m
 endif
+
+" 使用 <leader>n 快速切换行号显示
+nnoremap <silent> <leader>n :set number!<CR>
 
 nnoremap <F6> :cnext<CR>
 nnoremap <F7> :cprevious<CR>
@@ -147,7 +149,6 @@ let g:gutentags_plus_switch = 1 "Change focus to quickfix window after search (o
 "Enable advanced commands: GutentagsToggleTrace, etc.
 let g:gutentags_define_advanced_commands = 1
 let g:gutentags_trace = 0 "调试程序
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Plug 'dense-analysis/ale'
