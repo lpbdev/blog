@@ -73,7 +73,7 @@ def setConfig():
 
     pwd=os.getcwd()
     lnlist=["bashrc","i3/config", "i3blocks.conf", "tmux.conf",
-        "vimrc", "Xresources", "snippets"]
+        "vimrc", "Xresources", "snippets","gtags.conf"]
 
     for ln in lnlist:
         cmd='rm -rf ~/.%s; ln -sf %s/%s ~/.%s '%(ln,pwd,ln,ln)

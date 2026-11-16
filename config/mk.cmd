@@ -13,4 +13,8 @@ mklink  ..\..\.bashrc  bashrc
 
 del  ..\..\.vimrc 
 mklink  ..\..\.vimrc  vimrc
+
+del  ..\..\.gtags.conf 
+mklink  ..\..\.gtags.conf gtags.conf
+
 @pause
